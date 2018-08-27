@@ -14,8 +14,11 @@ var _data = require('./lib/data');
 
 // TESTING
 // @TODO delete this
-_data.read('test' , 'newFile' , function(err , data) {
-    console.log('error is ',err, ' and this is the data ',data);
+_data.update('test' , 'newFile' ,{'google' : 'doodle'}, function(err) {
+    if (err) 
+        console.log('error is ',err);
+    else 
+        console.log('NO ERROR WRITING... FILE WRITTEN');
 }); 
 
 
