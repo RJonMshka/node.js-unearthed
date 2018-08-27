@@ -14,11 +14,11 @@ var _data = require('./lib/data');
 
 // TESTING
 // @TODO delete this
-_data.update('test' , 'newFile' ,{'google' : 'doodle'}, function(err) {
+_data.delete('test' , 'newFile' , function(err) {
     if (err) 
         console.log('error is ',err);
     else 
-        console.log('NO ERROR WRITING... FILE WRITTEN');
+        console.log('NO ERROR DELETING... FILE DELETED');
 }); 
 
 
