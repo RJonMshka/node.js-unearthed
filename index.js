@@ -9,18 +9,8 @@ var url =  require('url');
 var stringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
-var _data = require('./lib/data');
-
-
-// TESTING
-// @TODO delete this
-_data.delete('test' , 'newFile' , function(err) {
-    if (err) 
-        console.log('error is ',err);
-    else 
-        console.log('NO ERROR DELETING... FILE DELETED');
-}); 
-
+var handlers = require('./lib/handlers');
+var helpers = require('./lib/helpers');
 
 
 // Instantiate the HTTP server
@@ -60,7 +50,7 @@ var unifiedServer = function (req , res) {
     var trimmedPath = path.replace(/^\/+|\/+$/g,'');
 
     // Get the query string object
-    var queryStringobject = parsedUrl.query; 
+    var queryStringObject = parsedUrl.query; 
 
     // Get the HTTP Method
     var method = req.method.toLowerCase();
@@ -85,10 +75,10 @@ var unifiedServer = function (req , res) {
         // Construct the data object to send to the handler
         var data = {
             'trimmedPath' : trimmedPath,
-            'queryStringobject' : queryStringobject,
+            'queryStringObject' : queryStringObject,
             'method' : method,
             'headers' : headers,
-            'payload' : buffer
+            'payload' : helpers.parseJsonToObject(buffer)
         };
 
         // Route the request to chosen handler
@@ -112,26 +102,8 @@ var unifiedServer = function (req , res) {
     });
 };
 
-// Define Handlers
-var handlers = {};
-
-// Ping Handler
-handlers.ping = function (data , callback) {
-    callback(200);
-}
-
-// // Sample Handler
-// handlers.sample = function (data , callback) {
-//     // Callback a HTTP status code, and a payload object
-//     callback(406 , {'name' : 'sample handler'});
-// };
-
-// Not Found Handler
-handlers.notFound = function (data , callback) {
-    callback(404);
-};
-
 // Defining a request router
 var router = {
-    'ping': handlers.ping
+    'ping': handlers.ping,
+    'users': handlers.users
 };
